@@ -1,0 +1,40 @@
+name: Enhance and Validate HTML
+
+on: [push, pull_request]
+
+jobs:
+  validate-and-update-html:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '20'
+
+    - name: Install HTML Validator
+      run: npm install -g html-validator
+
+    - name: Validate HTML
+      run: html-validator --file index.html --verbose
+
+    - name: Update HTML file based on time of day
+      run: |
+        HOUR=$(date +%H)
+        if [[ "$HOUR" -lt 12 ]]; then
+          GREETING="Good morning!"
+        elif [[ "$HOUR" -ge 12 && "$HOUR" -lt 18 ]]; then
+          GREETING="Good afternoon!"
+        else
+          GREETING="Good evening!"
+        fi
+        echo "<html><head><title>Test Page</title></head><body><h1>$GREETING</h1><p>The current time is $(date).</p></body></html>" > index.html
+
+    - name: Commit and push if changed
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add index.html
+        git diff --cached --exit-code || (git commit -m "Update HTML with greetings based on time of day" && git push) || echo "No changes to commit"
