@@ -46,4 +46,4 @@ jobs:
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
         git add lesson2_static_site/index.html
-        git diff --cached --exit-code || (git commit -m "Update HTML with greetings based on time of day" && git push https://antnknvlnk:${{ secrets.PAT_REPO }}@github.com/antnknvlnk/dedicatted_l2_docker HEAD:master) || echo "No changes to commit"
+        git diff --cached --exit-code || (git commit -m "Update HTML with greetings based on time of day" && git push https://antnknvlnk:${{ secrets.PAT_REPO }}@github.com/antnknvlnk/dedicatted_l2_docker.git master) || echo "No changes to commit"
