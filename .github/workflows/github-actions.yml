@@ -15,10 +15,16 @@ jobs:
         node-version: '20'
 
     - name: Install HTML Validator
-      run: npm install -g html-validator
+      run: npm install html-validator
 
     - name: Validate HTML
-      run: html-validator --file index.html --verbose
+      run: npx html-validator --file index.html --verbose
+
+    - name: Check PATH
+      run: echo $PATH
+
+    - name: List global NPM packages
+      run: npm list -g --depth=0
 
     - name: Update HTML file based on time of day
       run: |
