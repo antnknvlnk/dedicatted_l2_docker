@@ -15,19 +15,10 @@ jobs:
         node-version: '20'
 
     - name: Install HTML Validator
-      run: npm install html-validator
-
-    - name: List installed packages
-      run: ls node_modules/.bin
+      run: npm install html-validate
 
     - name: Validate HTML
-      run: npx html-validate lesson2_static_site/index.html --verbose
-
-    - name: Check PATH
-      run: echo $PATH
-
-    - name: List global NPM packages
-      run: npm list -g --depth=0
+      run: npx html-validate --format codeframe lesson2_static_site/index.html
 
     - name: Update HTML file based on time of day
       run: |
@@ -39,11 +30,11 @@ jobs:
         else
           GREETING="Good evening!"
         fi
-        echo "<html><head><title>Test Page</title></head><body><h1>$GREETING</h1><p>The current time is $(date).</p></body></html>" > index.html
+        echo "<html><head><title>Test Page</title></head><body><h1>$GREETING</h1><p>The current time is $(date).</p></body></html>" > lesson2_static_site/index.html
 
     - name: Commit and push if changed
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
-        git add index.html
+        git add lesson2_static_site/index.html
         git diff --cached --exit-code || (git commit -m "Update HTML with greetings based on time of day" && git push) || echo "No changes to commit"
