@@ -17,8 +17,11 @@ jobs:
     - name: Install HTML Validator
       run: npm install html-validator
 
+    - name: List installed packages
+      run: ls node_modules/.bin
+
     - name: Validate HTML
-      run: npx html-validator --file index.html --verbose
+      run: node ./node_modules/html-validator/cli.js --file index.html --verbose
 
     - name: Check PATH
       run: echo $PATH
