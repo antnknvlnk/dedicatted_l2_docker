@@ -18,7 +18,7 @@ jobs:
       run: npm install html-validate
 
     - name: Validate HTML
-      run: npx html-validate --format codeframe lesson2_static_site/index.html
+      run: npx html-validate --formatter codeframe lesson2_static_site/index.html
 
     - name: Update HTML file based on time of day
       run: |
