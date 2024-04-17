@@ -21,7 +21,7 @@ jobs:
       run: ls node_modules/.bin
 
     - name: Validate HTML
-      run: node ./node_modules/html-validator/cli.js --file index.html --verbose
+      run: npx html-validate --file index.html --verbose
 
     - name: Check PATH
       run: echo $PATH
