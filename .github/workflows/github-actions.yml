@@ -20,24 +20,30 @@ jobs:
     - name: Validate HTML
       run: npx html-validate --formatter codeframe lesson2_static_site/index.html
 
-    - name: Update HTML file based on time of day
+    - name: Set Greeting Message
       run: |
         HOUR=$(date +%H)
         if [[ "$HOUR" -lt 12 ]]; then
-          GREETING="Good morning!"
+          echo "Good morning!" > greeting.txt
         elif [[ "$HOUR" -ge 12 && "$HOUR" -lt 18 ]]; then
-          GREETING="Good afternoon!"
+          echo "Good afternoon!" > greeting.txt
         else
-          GREETING="Good evening!"
+          echo "Good evening!" > greeting.txt
         fi
+
+    - name: Update HTML file
+      run: |
+        GREETING=$(cat greeting.txt)
         echo "<html><head><title>Test Page</title></head><body><h1>$GREETING</h1><p>The current time is $(date).</p></body></html>" > lesson2_static_site/index.html
+
+    - name: Check if changes exist
+      run: |
+        git diff
+        git status
 
     - name: Commit and push if changed
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
         git add lesson2_static_site/index.html
-        git diff --cached --exit-code || echo "No changes to commit" || (
-          git commit -m "Update HTML with greetings based on time of day" && 
-          git push https://${{ secrets.PAT_REPO }}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
-        )
+        git diff --cached --exit-code || (git commit -m "Update HTML with greetings based on time of day" && git push) || echo "No changes to commit"
