@@ -34,7 +34,8 @@ jobs:
     - name: Update HTML file
       run: |
         GREETING=$(cat greeting.txt)
-        echo "<html><head><title>Test Page</title></head><body><h1>$GREETING</h1><p>The current time is $(date).</p></body></html>" > lesson2_static_site/index.html
+        echo '<!DOCTYPE html>' > lesson2_static_site/index.html
+        echo '<html lang="en"><head><title>Test Page</title></head><body><h1>'"$GREETING"'</h1><p>The current time is '"$(date)"'.</p></body></html>' >> lesson2_static_site/index.html
 
     - name: Check if changes exist
       run: |
