@@ -37,6 +37,33 @@ jobs:
         echo '<!DOCTYPE html>' > lesson2_static_site/index.html
         echo '<html lang="en"><head><title>Test Page</title></head><body><h1>'"$GREETING"'</h1><p>The current time is '"$(date)"'.</p></body></html>' >> lesson2_static_site/index.html
 
+    - name: Build Docker Image
+      run: |
+        echo "Building Docker image..."
+        docker build -t my-web-app .
+
+    - name: Run Docker Container
+      run: |
+        echo "Running Docker container..."
+        docker run -d --name my-web-app-container -p 80:80 my-web-app
+
+    - name: Check Running Containers
+      run: |
+        echo "Listing running containers..."
+        docker ps
+
+    - name: Display Container Logs
+      run: |
+        echo "Displaying container logs..."
+        docker logs my-web-app-container
+
+    - name: Cleanup
+      run: |
+        echo "Cleaning up..."
+        docker stop my-web-app-container
+        docker rm my-web-app-container
+        docker rmi my-web-app
+
     - name: Check if changes exist
       run: |
         git diff
